@@ -1,0 +1,86 @@
+from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as ec
+import time
+
+driver=webdriver.Chrome(r"C:\Users\7000026201\Downloads\chromedriver_win32\chromedriver.exe")
+
+driver.implicitly_wait(30)
+
+driver.maximize_window()
+
+driver.get("https://www.craftsvilla.com/")
+
+
+actions = ActionChains(driver)
+
+salwar=driver.find_element_by_xpath("(//div//ul//li//a)[51]")
+
+time.sleep(5)
+
+actions.move_to_element(salwar).perform()
+
+menus=driver.find_elements_by_xpath("(//div//div[2])[5]//a")
+
+time.sleep(5)
+
+for menu in menus:
+    print(menu.text)
+
+driver.find_element_by_xpath("(//div//ul//ul//li//a)[51]").click()
+
+prices = driver.find_elements_by_xpath("//span[@class='product-offer-price']")
+
+time.sleep(5)
+
+list_before_sort=[]
+
+for price in prices:
+    list_before_sort.append(int(price.text[2:]))
+
+sorted_list=sorted(list_before_sort,reverse=True)
+
+driver.find_element_by_id("discountedPriceOrder_DESC").click()
+
+time.sleep(5)
+
+prices = driver.find_elements_by_xpath("//span[@class='product-offer-price']")
+
+time.sleep(5)
+
+l=[]
+
+for price in prices:
+    l.append(int(price.text[2:]))
+
+print(l)
+
+if sorted_list[0]==l[0]:
+    print("The prices is sorted according to high to low")
+else:
+    print("The prices is not been sorted according to high to low")
+
+
+driver.find_element_by_xpath("(//div//div/a/img)[20]").click()
+
+time.sleep(5)
+
+get_title='Purple Georgette Embroidered Unstitched Churidar Suit'
+
+
+item_name=driver.find_element_by_xpath("//div//div//div//h1")
+
+if get_title==item_name.text:
+    print("Both the name are matching and the selected item and the item added to cart is same")
+else:
+    print("Both the name are not matching and the selected item and the item added to cart are not same")
+
+time.sleep(5)
+
+driver.find_element_by_xpath("//span[text()='Add to Cart']").click()
+
+
+
+
